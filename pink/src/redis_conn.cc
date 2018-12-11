@@ -187,4 +187,8 @@ int RedisConn::ParserDealMessageCb(RedisParser* parser, RedisCmdArgsType& argv_)
   return res;
 }
 
+int RedisConn::ParserCompleteCb(RedisParser* parser, std::vector<RedisCmdArgsType>& argvs_) {
+  return 0;
+}
+
 }  // namespace pink
