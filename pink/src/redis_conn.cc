@@ -311,6 +311,16 @@ ReadStatus RedisConn::GetRequest() {
   if (ret == kReadAll) {
     next_parse_pos_ = 0;
     last_read_pos_ = -1;
+    if (rbuf_len_ > REDIS_IOBUF_LEN) {
+      free(rbuf_);
+      rbuf_ = nullptr;
+      rbuf_len_ = 0;
+      rbuf_ = static_cast<char *>(malloc(REDIS_IOBUF_LEN));
+      if (rbuf_ == nullptr) {
+        return kFullError;
+      }
+      rbuf_len_ = REDIS_IOBUF_LEN;
+    }
   }
 
   return ret; // OK || HALF || FULL_ERROR || PARSE_ERROR
